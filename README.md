@@ -1,16 +1,11 @@
 \# 💰 Smart-Expense-Analyzer
 
 
-
 A Spring Boot based application to track, categorize, and analyze daily expenses.  
 
 It helps users gain insights into their spending habits and make smarter financial decisions.  
 
-
-
 ---
-
-
 
 \## 🚀 Features
 
@@ -26,11 +21,7 @@ It helps users gain insights into their spending habits and make smarter financi
 
 \- ✅ Future scope: budget alerts, AI-based suggestions
 
-
-
 ---
-
-
 
 \## 🏗️ Tech Stack
 
@@ -45,9 +36,7 @@ It helps users gain insights into their spending habits and make smarter financi
 \- \*\*Version Control:\*\* Git + GitHub  
 
 
-
 ---
-
 
 
 \## 📂 Project Structure
@@ -86,19 +75,10 @@ Smart-Expense-Analyzer/
 
 
 
-
-
----
-
-
-
 \## ⚙️ Installation \& Setup
 
 
-
 \### 1. Clone the Repository
-
-```bash
 
 git clone https://github.com/your-username/Smart-Expense-Analyzer.git
 
@@ -116,7 +96,6 @@ Create a database in MySQL:
 CREATE DATABASE smart\_expense\_db;
 
 Update src/main/reso rces/application.yml:
-
 
 
 ## spring:
@@ -138,13 +117,9 @@ Update src/main/reso rces/application.yml:
 &nbsp;   show-sql: true
 
 
-
 \### 3. Run the App
 
 &nbsp;      mvn spring-boot:run
-
-
-
 
 
 \##📡 API Endpoints (Sample)
@@ -166,7 +141,6 @@ GET	/api/analytics	Get spending breakdown (%)
 
 
 \##📊 Example Expense JSON
-
 {
 
 &nbsp; "title": "Lunch at Cafe",
@@ -179,14 +153,8 @@ GET	/api/analytics	Get spending breakdown (%)
 
 }
 
-
-
 \##🧑‍💻 Author
-
-
-
 Yagnesh Sai 
-
 🚀 Passionate about building Java/Spring Boot projects with real-world impact.
 
 
