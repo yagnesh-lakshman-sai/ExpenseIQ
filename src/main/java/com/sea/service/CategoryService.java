@@ -1,13 +1,14 @@
 package com.sea.service;
 
 import com.sea.dto.CategoryDTO;
+import com.sea.model.Category;
+
 import java.util.List;
 
 public interface CategoryService {
-    CategoryDTO create(CategoryDTO dto);
-    CategoryDTO getById(Long id);
-    List<CategoryDTO> getAll();
-    CategoryDTO update(Long id, CategoryDTO dto);
-    void delete(Long id);
+    Category createCategory(CategoryDTO categoryDTO);
+    List<Category> getAllCategories();
+    Category getCategoryById(Long id);
+    Category updateCategory(Long id, CategoryDTO categoryDTO);
+    void deleteCategory(Long id);
 }
-
