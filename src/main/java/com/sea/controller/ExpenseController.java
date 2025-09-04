@@ -1,53 +1,57 @@
 package com.sea.controller;
 
 import com.sea.dto.ExpenseDTO;
+import com.sea.model.Expense;
 import com.sea.service.ExpenseService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/expenses")
+@RequiredArgsConstructor
 public class ExpenseController {
 
-    private final ExpenseService expenses;
-
-    public ExpenseController(ExpenseService expenses) {
-        this.expenses = expenses;
-    }
+    private final ExpenseService expenseService;
 
     @PostMapping
-    public ExpenseDTO create(@RequestBody ExpenseDTO dto) {
-        return expenses.create(dto);
-    }
-
-    @GetMapping("/{id}")
-    public ExpenseDTO get(@PathVariable Long id) {
-        return expenses.getById(id);
+    public ResponseEntity<Expense> createExpense(@RequestBody ExpenseDTO expenseDTO) {
+        return ResponseEntity.ok(expenseService.createExpense(expenseDTO));
     }
 
     @GetMapping
-    public List<ExpenseDTO> list() {
-        return expenses.getAll();
+    public ResponseEntity<List<Expense>> getAllExpenses() {
+        return ResponseEntity.ok(expenseService.getAllExpenses());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Expense> getExpenseById(@PathVariable Long id) {
+        return ResponseEntity.ok(expenseService.getExpenseById(id));
     }
 
     @PutMapping("/{id}")
-    public ExpenseDTO update(@PathVariable Long id, @RequestBody ExpenseDTO dto) {
-        return expenses.update(id, dto);
+    public ResponseEntity<Expense> updateExpense(
+            @PathVariable Long id,
+            @RequestBody ExpenseDTO expenseDTO
+    ) {
+        return ResponseEntity.ok(expenseService.updateExpense(id, expenseDTO));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        expenses.delete(id);
+    public ResponseEntity<String> deleteExpense(@PathVariable Long id) {
+        expenseService.deleteExpense(id);
+        return ResponseEntity.ok("Expense deleted successfully.");
     }
 
     @GetMapping("/user/{userId}")
-    public List<ExpenseDTO> listByUser(@PathVariable Long userId) {
-        return expenses.getByUser(userId);
+    public ResponseEntity<List<Expense>> getExpensesByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(expenseService.getExpensesByUser(userId));
     }
 
     @GetMapping("/category/{categoryId}")
-    public List<ExpenseDTO> listByCategory(@PathVariable Long categoryId) {
-        return expenses.getByCategory(categoryId);
+    public ResponseEntity<List<Expense>> getExpensesByCategory(@PathVariable Long categoryId) {
+        return ResponseEntity.ok(expenseService.getExpensesByCategory(categoryId));
     }
 }
