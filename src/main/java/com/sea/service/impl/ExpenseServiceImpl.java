@@ -9,108 +9,87 @@ import com.sea.repository.CategoryRepository;
 import com.sea.repository.ExpenseRepository;
 import com.sea.repository.UserRepository;
 import com.sea.service.ExpenseService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ExpenseServiceImpl implements ExpenseService {
 
-    private final ExpenseRepository expenses;
-    private final UserRepository users;
-    private final CategoryRepository categories;
-
-    public ExpenseServiceImpl(ExpenseRepository expenses, UserRepository users, CategoryRepository categories) {
-        this.expenses = expenses;
-        this.users = users;
-        this.categories = categories;
-    }
+    private final ExpenseRepository expenseRepository;
+    private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
-    public ExpenseDTO create(ExpenseDTO dto) {
-        Expense e = toEntity(dto);
-        e = expenses.save(e);
-        return toDTO(e);
-    }
+    public Expense createExpense(ExpenseDTO expenseDTO) {
+        User user = userRepository.findById(expenseDTO.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + expenseDTO.getUserId()));
 
-    @Override
-    public ExpenseDTO getById(Long id) {
-        Expense e = expenses.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Expense not found: " + id));
-        return toDTO(e);
-    }
+        Category category = categoryRepository.findById(expenseDTO.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + expenseDTO.getCategoryId()));
 
-    @Override
-    public List<ExpenseDTO> getAll() {
-        return expenses.findAll().stream().map(this::toDTO).collect(Collectors.toList());
-    }
-
-    @Override
-    public ExpenseDTO update(Long id, ExpenseDTO dto) {
-        Expense e = expenses.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Expense not found: " + id));
-
-        if (dto.getDescription() != null) e.setDescription(dto.getDescription());
-        if (dto.getAmount() != null) e.setAmount(dto.getAmount());
-        if (dto.getDate() != null) e.setDate(dto.getDate());
-        if (dto.getUserId() != null) {
-            User u = users.findById(dto.getUserId())
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found: " + dto.getUserId()));
-            e.setUser(u);
-        }
-        if (dto.getCategoryId() != null) {
-            Category c = categories.findById(dto.getCategoryId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Category not found: " + dto.getCategoryId()));
-            e.setCategory(c);
-        }
-
-        return toDTO(expenses.save(e));
-    }
-
-    @Override
-    public void delete(Long id) {
-        if (!expenses.existsById(id)) throw new ResourceNotFoundException("Expense not found: " + id);
-        expenses.deleteById(id);
-    }
-
-    @Override
-    public List<ExpenseDTO> getByUser(Long userId) {
-        return expenses.findByUser_Id(userId).stream().map(this::toDTO).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ExpenseDTO> getByCategory(Long categoryId) {
-        return expenses.findByCategory_Id(categoryId).stream().map(this::toDTO).collect(Collectors.toList());
-    }
-
-    private Expense toEntity(ExpenseDTO dto) {
-        if (dto.getUserId() == null || dto.getCategoryId() == null)
-            throw new IllegalArgumentException("userId and categoryId are required");
-
-        User u = users.findById(dto.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + dto.getUserId()));
-        Category c = categories.findById(dto.getCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found: " + dto.getCategoryId()));
-
-        return Expense.builder()
-                .id(dto.getId())
-                .description(dto.getDescription())
-                .amount(dto.getAmount())
-                .date(dto.getDate())
-                .user(u)
-                .category(c)
+        Expense expense = Expense.builder()
+                .description(expenseDTO.getDescription())
+                .amount(expenseDTO.getAmount())
+                .date(expenseDTO.getDate())
+                .user(user)
+                .category(category)
                 .build();
+
+        return expenseRepository.save(expense);
     }
 
-    private ExpenseDTO toDTO(Expense e) {
-        return ExpenseDTO.builder()
-                .id(e.getId())
-                .description(e.getDescription())
-                .amount(e.getAmount())
-                .date(e.getDate())
-                .userId(e.getUser().getId())
-                .categoryId(e.getCategory().getId())
-                .build();
+    @Override
+    public List<Expense> getAllExpenses() {
+        return expenseRepository.findAll();
+    }
+
+    @Override
+    public Expense getExpenseById(Long id) {
+        return expenseRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Expense not found with id: " + id));
+    }
+
+    @Override
+    public Expense updateExpense(Long id, ExpenseDTO expenseDTO) {
+        Expense expense = getExpenseById(id);
+
+        User user = userRepository.findById(expenseDTO.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + expenseDTO.getUserId()));
+
+        Category category = categoryRepository.findById(expenseDTO.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + expenseDTO.getCategoryId()));
+
+        expense.setDescription(expenseDTO.getDescription());
+        expense.setAmount(expenseDTO.getAmount());
+        expense.setDate(expenseDTO.getDate());
+        expense.setUser(user);
+        expense.setCategory(category);
+
+        return expenseRepository.save(expense);
+    }
+
+    @Override
+    public void deleteExpense(Long id) {
+        Expense expense = getExpenseById(id);
+        expenseRepository.delete(expense);
+    }
+
+    @Override
+    public List<Expense> getExpensesByUser(Long userId) {
+        return expenseRepository.findAll()
+                .stream()
+                .filter(expense -> expense.getUser().getId().equals(userId))
+                .toList();
+    }
+
+    @Override
+    public List<Expense> getExpensesByCategory(Long categoryId) {
+        return expenseRepository.findAll()
+                .stream()
+                .filter(expense -> expense.getCategory().getId().equals(categoryId))
+                .toList();
     }
 }
