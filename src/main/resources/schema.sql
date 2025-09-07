@@ -1,11 +1,13 @@
--- Drop old tables if they exist (avoid FK errors during restarts)
+-- =============================
+-- DROP OLD TABLES (if they exist)
+-- =============================
 DROP TABLE IF EXISTS expenses;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS users;
 
-DROP TABLE IF EXISTS expenses;
-DROP TABLE IF EXISTS categories;
-DROP TABLE IF EXISTS users;
+-- =============================
+-- CREATE TABLES
+-- =============================
 
 CREATE TABLE users (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
