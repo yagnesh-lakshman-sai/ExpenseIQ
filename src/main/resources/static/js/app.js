@@ -1,0 +1,1 @@
+console.log("Smart Expense Analyzer Loaded Successfully");
