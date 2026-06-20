@@ -1,169 +1,230 @@
-\# 💰 Smart-Expense-Analyzer
+# 💰 ExpenseIQ
 
-
-A Spring Boot based application to track, categorize, and analyze daily expenses.  
-
-It helps users gain insights into their spending habits and make smarter financial decisions.  
+A full-stack expense management application built using **Java, Spring Boot, Spring Data JPA, MySQL, Thymeleaf, Bootstrap, and REST APIs**. The application helps users manage daily expenses by organizing them into categories and tracking spending efficiently.
 
 ---
 
-\## 🚀 Features
+## 🚀 Features
 
-\- ✅ Add, update, delete daily expenses
-
-\- ✅ Categorize expenses (Food, Travel, Shopping, Bills, etc.)
-
-\- ✅ View expenses by date range or category
-
-\- ✅ Monthly/weekly expense summaries
-
-\- ✅ Analytics with percentage breakdowns
-
-\- ✅ Future scope: budget alerts, AI-based suggestions
-
----
-
-\## 🏗️ Tech Stack
-
-\- \*\*Backend:\*\* Spring Boot (Java), Spring Data JPA, Hibernate  
-
-\- \*\*Database:\*\* MySQL  
-
-\- \*\*Build Tool:\*\* Maven  
-
-\- \*\*Other:\*\* Lombok, Validation API  
-
-\- \*\*Version Control:\*\* Git + GitHub  
-
+- User Management (CRUD)
+- Category Management (CRUD)
+- Expense Management (CRUD)
+- Layered Architecture
+- Global Exception Handling
+- DTO Support
+- MySQL Database Integration
+- Schema Initialization using `schema.sql`
+- Sample Data Seeding using `data.sql`
+- REST APIs with Postman Testing
+- Swagger API Documentation
+- Thymeleaf Frontend Pages
+- Bootstrap Responsive UI
+- Shared Navigation Bar using Thymeleaf Fragments
 
 ---
 
+## 🛠 Tech Stack
 
-\## 📂 Project Structure
+### Backend
+- Java 17
+- Spring Boot
+- Spring MVC
+- Spring Data JPA
+- Hibernate
+- MySQL
+- Lombok
 
+### Frontend
+- Thymeleaf
+- HTML5
+- CSS3
+- Bootstrap 5
+- JavaScript
+
+### Tools
+- Postman
+- Maven
+- Git
+- GitHub
+- Swagger OpenAPI
+
+---
+
+## 📂 Project Structure
+
+```text
+Smart-Expense-Analyzer
+│
+├── controller
+├── service
+│   └── impl
+├── repository
+├── model
+├── dto
+├── exception
+├── config
+├── util
+│
+├── resources
+│   ├── templates
+│   │   ├── dashboard.html
+│   │   ├── users.html
+│   │   ├── categories.html
+│   │   ├── expenses.html
+│   │   ├── add-expense.html
+│   │   └── fragments
+│   │       └── navbar.html
+│   │
+│   ├── static
+│   │   ├── css
+│   │   └── js
+│   │
+│   ├── application.properties
+│   ├── schema.sql
+│   └── data.sql
 ```
 
-Smart-Expense-Analyzer/
+---
 
-├── src/
+## 🗄 Database Schema
 
-│ ├── main/
+### User
+- id
+- name
+- email
+- password
 
-│ │ ├── java/com/smartexpenseanalyzer
+### Category
+- id
+- name
 
-│ │ │ ├── controller/ # REST Controllers
+### Expense
+- id
+- description
+- amount
+- date
+- user_id
+- category_id
 
-│ │ │ ├── model/ # Entities
+---
 
-│ │ │ ├── repository/ # JPA Repositories
+## 🔗 Entity Relationships
 
-│ │ │ ├── service/ # Business Logic
+- One User → Many Expenses
+- One Category → Many Expenses
+- Many Expenses → One User
+- Many Expenses → One Category
 
-│ │ │ └── SmartExpenseAnalyzerApplication.java
+---
 
-│ │ └── resources/
+## 🌐 REST API Endpoints
 
-│ │ ├── application.yml
+### Users
 
-│ │ └── data.sql (optional for sample data)
+| Method | Endpoint |
+|----------|----------|
+| GET | /api/users |
+| GET | /api/users/{id} |
+| POST | /api/users |
+| PUT | /api/users/{id} |
+| DELETE | /api/users/{id} |
 
-├── pom.xml
+### Categories
 
-└── README.md
+| Method | Endpoint |
+|----------|----------|
+| GET | /api/categories |
+| GET | /api/categories/{id} |
+| POST | /api/categories |
+| PUT | /api/categories/{id} |
+| DELETE | /api/categories/{id} |
 
-```
+### Expenses
 
+| Method | Endpoint |
+|----------|----------|
+| GET | /api/expenses |
+| GET | /api/expenses/{id} |
+| POST | /api/expenses |
+| PUT | /api/expenses/{id} |
+| DELETE | /api/expenses/{id} |
 
+---
 
-\## ⚙️ Installation \& Setup
+## 🎨 Frontend Pages
 
+| Page | URL |
+|-------|-----|
+| Dashboard | http://localhost:8085/ |
+| Users | http://localhost:8085/users-page |
+| Categories | http://localhost:8085/categories-page |
+| Expenses | http://localhost:8085/expenses-page |
+| Add Expense | http://localhost:8085/add-expense-page |
 
-\### 1. Clone the Repository
+---
 
+## ⚙️ Running the Project
+
+### Clone Repository
+
+```bash
 git clone https://github.com/your-username/Smart-Expense-Analyzer.git
+```
 
+### Navigate
+
+```bash
 cd Smart-Expense-Analyzer
+```
 
+### Configure Database
 
-## 2\. Configure Database (MySQL)
+Update:
 
-Create a database in MySQL:
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/smart_expense_db
+spring.datasource.username=root
+spring.datasource.password=your_password
+```
 
+### Run
 
+```bash
+mvn spring-boot:run
+```
 
-## sql
+Application will start at:
 
-CREATE DATABASE smart\_expense\_db;
+```text
+http://localhost:8085
+```
+## 🔮 Future Enhancements
 
-Update src/main/reso rces/application.yml:
+- Spring Security + JWT Authentication
+- Monthly Expense Analytics
+- Filter Expenses by Category and Date
+- Dashboard Charts
+- Export to Excel/PDF
+- Docker Support
+- Microservices Architecture
+- AWS Deployment
 
+---
 
-## spring:
+## 📌 Learning Outcomes
 
-&nbsp; datasource:
+- Spring Boot Layered Architecture
+- REST API Development
+- JPA Entity Relationships
+- Exception Handling
+- Database Design
+- DTO Pattern
+- Swagger Documentation
+- Thymeleaf Integration
+- CRUD Operations
+- Full Stack Application Development
 
-&nbsp;   url: jdbc:mysql://localhost:3306/smart\_expense\_db
+---
 
-&nbsp;   username: root
-
-&nbsp;   password: yourpassword
-
-&nbsp; jpa:
-
-&nbsp;   hibernate:
-
-&nbsp;     ddl-auto: update
-
-&nbsp;   show-sql: true
-
-
-\### 3. Run the App
-
-&nbsp;      mvn spring-boot:run
-
-
-\##📡 API Endpoints (Sample)
-
-Method	Endpoint	Description
-
-POST	/api/expenses	Add a new expense
-
-GET	/api/expenses	Get all expenses
-
-GET	/api/expenses/{id}	Get expense by ID
-
-PUT	/api/expenses/{id}	Update an expense
-
-DELETE	/api/expenses/{id}	Delete an expense
-
-GET	/api/analytics	Get spending breakdown (%)
-
-
-
-\##📊 Example Expense JSON
-{
-
-&nbsp; "title": "Lunch at Cafe",
-
-&nbsp; "amount": 250,
-
-&nbsp; "category": "Food",
-
-&nbsp; "date": "202\*-0\*-\*\*"
-
-}
-
-\##🧑‍💻 Author
-Yagnesh Sai 
-🚀 Passionate about building Java/Spring Boot projects with real-world impact.
-
-
-
-
-
-\##⭐ Support
-
-
-
-If you find this project helpful, don’t forget to star ⭐ the repo!
-
+## 👨‍💻 Author
+**Yagnesh Lakshman Sai Dangudubiyyam**
